@@ -1,0 +1,7 @@
+target/
+traces/
+*.flows
+.env
+.claude/settings.local.json
+evals/results/*.raw.jsonl
+models/
