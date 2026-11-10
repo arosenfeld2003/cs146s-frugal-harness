@@ -19,3 +19,13 @@ git clone --recurse-submodules https://github.com/arosenfeld2003/cs146s-frugal-h
 vps/fetch-models.sh   # ~9GB of GGUF models, verified against models.lock
 vps/bench.sh          # requires llama.cpp (llama-bench) on PATH
 ```
+
+## How this is built
+
+All code in this repo is written with [Claude Code](https://claude.com/claude-code), with me directing,
+reviewing, and deciding. Each commit's `Co-Authored-By` trailer records the model that wrote it.
+Model changes are logged below so results and code can be traced to the model that produced them.
+
+| From | Model | Notes |
+|---|---|---|
+| 2026-11-09 (M0) | Claude Opus 5.5 (`claude-opus-5-5`) | Initial setup, scripts, benchmarks |
