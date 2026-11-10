@@ -13,6 +13,7 @@ Progress is written up per milestone on [my blog](https://arosenfeld2003.github.
 | `vps/` | Cross-platform scripts: pinned model downloads (`models.lock`, sha256-verified), `llama-bench` runner |
 | `evals/` | Benchmark results (JSONL), later the eval suite and cost ledger |
 | `notes/` | Per-milestone notes |
+| `docs/` | [Repo overview](docs/README.md), [Rust learning log](docs/rust-learning-log.md), [Rust vs Python](docs/rust-vs-python.md) |
 
 ```bash
 git clone --recurse-submodules https://github.com/arosenfeld2003/cs146s-frugal-harness
