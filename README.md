@@ -4,7 +4,7 @@ A remix of Stanford's [CS146S: The Modern Software Developer](https://themoderns
 a Rust coding-agent harness for frontier models (Claude) that tries to get the most out of every paid token
 by offloading small jobs to tiny local models (llama.cpp), built local-first and security-first.
 
-Progress is written up per milestone on [my blog](https://arosenfeld2003.github.io/blog/).
+Progress is written up per milestone on [my blog](https://www.adrosenfeld.com/blog/) — first post: [Part 0](https://www.adrosenfeld.com/blog/2026-11-09-frugal-harness-m0-tiny-models/).
 
 | Path | What |
 |---|---|
