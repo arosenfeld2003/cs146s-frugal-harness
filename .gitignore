@@ -5,3 +5,4 @@ traces/
 .claude/settings.local.json
 evals/results/*.raw.jsonl
 models/
+__pycache__/

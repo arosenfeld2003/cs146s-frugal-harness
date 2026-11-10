@@ -40,8 +40,9 @@ harness (Rust binary)
 | `vps/models.lock` | Model pins: `repo revision file sha256` per line | 3 models |
 | `vps/fetch-models.sh` | Download + verify models (macOS/Linux, resumable, retries) | ✅ |
 | `vps/bench.sh` | `llama-bench` in `gpu` / `cpu4` modes → `evals/bench/*.jsonl` | ✅ |
+| `tracer/` | mitmproxy capture of agent traffic → redacted JSONL; `report.py` token breakdown | ✅ M1 |
 | `evals/` | Benchmark results; later the task suite, A/B results, and cost ledger | benchmarks |
-| `notes/mN.md` | Working notes per milestone (raw material for blog posts) | M0 |
+| `notes/mN.md` | Working notes per milestone (raw material for blog posts) | M0, M1 |
 | `docs/` | This overview, the Rust learning log, Rust vs Python | living docs |
 | `models/` | Downloaded GGUF files (gitignored) | — |
 
@@ -50,7 +51,7 @@ harness (Rust binary)
 | # | Course base | Remix | Status |
 |---|---|---|---|
 | M0 | setup | toolchain, local inference, pinned models, benchmarks | ✅ ([notes](../notes/m0.md)) |
-| M1 | W1: trace dissection | where do Claude Code's and pi's tokens go? (mitmproxy) | next |
+| M1 | W1: trace dissection | where do Claude Code's and pi's tokens go? (mitmproxy) | in progress ([notes](../notes/m1.md)) |
 | M2 | n/a | harness v0: agent loop, streaming, tools, prompt caching, ledger | |
 | M3 | n/a | sidecar v1: router + 2 offload jobs, A/B vs M2 | |
 | M4 | W2: MCP server | course MCP server in Rust (`rmcp`); expose the sidecar to Claude Code | |

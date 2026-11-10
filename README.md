@@ -11,6 +11,7 @@ Progress is written up per milestone on [my blog](https://www.adrosenfeld.com/bl
 | `course/` | Course assignments (git submodule of [mihail911/modern-software-dev-assignments](https://github.com/mihail911/modern-software-dev-assignments)) |
 | `harness/` | The Rust harness (early days) |
 | `vps/` | Cross-platform scripts: pinned model downloads (`models.lock`, sha256-verified), `llama-bench` runner |
+| `tracer/` | mitmproxy capture of Claude Code / pi traffic (redacted JSONL) + token report |
 | `evals/` | Benchmark results (JSONL), later the eval suite and cost ledger |
 | `notes/` | Per-milestone notes |
 | `docs/` | [Repo overview](docs/README.md), [Rust learning log](docs/rust-learning-log.md), [Rust vs Python](docs/rust-vs-python.md) |
