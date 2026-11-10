@@ -3,6 +3,7 @@
 
   tracer/report.py summary traces/DATE/label.jsonl     # all flows + per-request token breakdown
   tracer/report.py dump traces/DATE/label.jsonl SEQ    # write SEQ's request/response as markdown
+  tracer/report.py diff A.jsonl B.jsonl                # diff the main /v1/messages request of two captures
 
 Token sizes per component are estimates (chars / 4); the totals in `usage` are exact.
 """
@@ -100,6 +101,51 @@ def dump(path, seq):
     print(out)
 
 
+def main_request(path):
+    """The last main-loop /v1/messages request in a capture."""
+    reqs = [r for r in load(path) if is_messages(r)]
+    main = [r for r in reqs if r["req_headers"].get("x-claude-code-request-class", "main") == "main"]
+    return (main or reqs)[-1]
+
+
+def diff(path_a, path_b):
+    import difflib
+
+    a, b = main_request(path_a)["req_body"], main_request(path_b)["req_body"]
+    ha, hb = main_request(path_a)["req_headers"], main_request(path_b)["req_headers"]
+
+    def text_diff(name, x, y):
+        lines = list(difflib.unified_diff(x.splitlines(), y.splitlines(), "a", "b", lineterm="", n=1))
+        if lines:
+            print(f"\n### {name}\n\n```diff\n" + "\n".join(lines[2:]) + "\n```")
+
+    def sys_text(body):
+        s = body.get("system") or []
+        return [s] if isinstance(s, str) else [x.get("text", "") for x in s]
+
+    def sys_msgs(body):
+        return "\n".join(block_text(c) for m in body["messages"] if m["role"] == "system"
+                         for c in (m["content"] if isinstance(m["content"], list) else [m["content"]]))
+
+    betas = lambda h: set(h.get("anthropic-beta", "").split(","))
+    print(f"## diff: {path_a} → {path_b}\n")
+    print(f"- beta flags added: {sorted(betas(hb) - betas(ha))}\n- beta flags removed: {sorted(betas(ha) - betas(hb))}")
+    print(f"- request fields added: {sorted(set(b) - set(a))}, removed: {sorted(set(a) - set(b))}")
+    ta = {t.get("name", t.get("type")): t for t in a.get("tools") or []}
+    tb = {t.get("name", t.get("type")): t for t in b.get("tools") or []}
+    print(f"- tools added: {sorted(set(tb) - set(ta))}, removed: {sorted(set(ta) - set(tb))}")
+    for name in sorted(set(ta) & set(tb)):
+        if ta[name] != tb[name]:
+            print(f"- tool changed: {name} ({est(ta[name])} → {est(tb[name])} est. tokens)")
+    sa, sb = sys_text(a), sys_text(b)
+    for i in range(max(len(sa), len(sb))):
+        text_diff(f"system[{i}]", sa[i] if i < len(sa) else "", sb[i] if i < len(sb) else "")
+    text_diff("system-role messages", sys_msgs(a), sys_msgs(b))
+    for name in sorted(set(ta) & set(tb)):
+        if ta[name] != tb[name]:
+            text_diff(f"tool {name}", json.dumps(ta[name], indent=1), json.dumps(tb[name], indent=1))
+
+
 if __name__ == "__main__":
     cmd, *args = sys.argv[1:] or ["-h"]
-    {"summary": summary, "dump": dump}.get(cmd, lambda *_: print(__doc__))(*args)
+    {"summary": summary, "dump": dump, "diff": diff}.get(cmd, lambda *_: print(__doc__))(*args)
