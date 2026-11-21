@@ -1,3 +1,6 @@
 [submodule "course"]
 	path = course
 	url = https://github.com/mihail911/modern-software-dev-assignments.git
+[submodule "experiments/m1-tokenledger"]
+	path = experiments/m1-tokenledger
+	url = https://github.com/arosenfeld2003/m1-tokenledger.git
