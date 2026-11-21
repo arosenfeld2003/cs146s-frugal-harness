@@ -41,7 +41,7 @@ harness (Rust binary)
 | `vps/fetch-models.sh` | Download + verify models (macOS/Linux, resumable, retries) | ✅ |
 | `vps/bench.sh` | `llama-bench` in `gpu` / `cpu4` modes → `evals/bench/*.jsonl` | ✅ |
 | `tracer/` | mitmproxy capture of agent traffic → redacted JSONL; `report.py` token breakdown | ✅ M1 |
-| `experiments/m1-tokenledger` | Scratch repo (submodule) for the M1 real-task capture, pinned to tag `start` | M1 |
+| `experiments/m1-tokenledger` | Scratch repo (submodule) for the M1 real-task capture, pinned to tag `v2-start` (`start` = v1) | M1 |
 | `evals/` | Benchmark results; later the task suite, A/B results, and cost ledger | benchmarks |
 | `notes/mN.md` | Working notes per milestone (raw material for blog posts) | M0, M1 |
 | `docs/` | This overview, the Rust learning log, Rust vs Python | living docs |
