@@ -54,7 +54,9 @@ def summary(path):
                 roles[f'{m["role"]}:{blk.get("type", "text")}'] += est(block_text(blk))
         u = (r.get("resp_body") or {}).get("usage", {})
         cls = r["req_headers"].get("x-claude-code-request-class", "")
-        print(f"\n### seq {r['seq']} {b.get('model')} {cls} ({r['t_end'] - r['t_start']:.1f}s)\n")
+        thread = (b.get("thread") or {}).get("type", "")
+        thread = f"thread:{thread}" + (" (delta only: tools/system sent on create)" if thread == "continue" else "") if thread else ""
+        print(f"\n### seq {r['seq']} {b.get('model')} {cls} {thread} ({r['t_end'] - r['t_start']:.1f}s)\n")
         print("| component | est. tokens | detail |\n|---|---|---|")
         for i, s in enumerate(system):
             cc = s.get("cache_control")
@@ -102,10 +104,14 @@ def dump(path, seq):
 
 
 def main_request(path):
-    """The last main-loop /v1/messages request in a capture."""
+    """The last self-contained main-loop /v1/messages request in a capture.
+
+    Thread `continue` requests carry only the new turn (no tools, minimal system), so skip them.
+    """
     reqs = [r for r in load(path) if is_messages(r)]
     main = [r for r in reqs if r["req_headers"].get("x-claude-code-request-class", "main") == "main"]
-    return (main or reqs)[-1]
+    full = [r for r in main if (r["req_body"].get("thread") or {}).get("type") != "continue"]
+    return (full or main or reqs)[-1]
 
 
 def diff(path_a, path_b):
